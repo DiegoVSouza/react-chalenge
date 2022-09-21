@@ -4,6 +4,15 @@
 .postsContent{
   max-width: 700px;
   margin: 3rem  auto 3rem 23.125rem ;
+
+  button{
+    color: var(--highlight);
+    background: none;
+    font-size: 1.125rem;
+    font-weight: bold;
+    border: none;
+    margin-top: 4rem; 
+  }
   img{
     margin-bottom: 4rem;
   }
@@ -29,6 +38,12 @@
     font-size: 0.875rem;
     color: var(--info);
 
+    svg{
+      width: 1.25rem;
+      height: 1.25rem;
+      transform: translateY(20%);
+      margin-right: 0.5rem;
+    }
   }
   label{
     margin-left: 1.5rem;
