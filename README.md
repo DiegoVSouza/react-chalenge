@@ -1,6 +1,6 @@
 <h1 align="center">
 <br>
-  <img src="/logo.svg" alt="logo" width="250">
+  <img src="./public/logo.svg" alt="logo" width="250">
 <br>
 <br>
 </h1>
@@ -28,7 +28,7 @@
 
 
 ## 👉 Demonstração da aplicação
-  <img src="/preview.png" alt="preview">
+  <img src="./public/preview.png" alt="preview">
 
 ## 👨‍💻 Rodando na sua máquina
 
