@@ -32,9 +32,9 @@ interface HomeProps {
 export default function Home({ postsPagination }: HomeProps) {
   const [posts, setPosts] = useState(postsPagination.results)
   const [nextPage, setNextPage] = useState(postsPagination.next_page)
-  const formatPosts =(posts:PostPagination)=>{
+  const formatPosts = (posts: PostPagination) => {
     console.log(posts)
-    const postsFormatted:Post[] = posts.results.map(post => {
+    const postsFormatted: Post[] = posts.results.map(post => {
       return {
         uid: post.uid,
         first_publication_date: new Date(
@@ -51,17 +51,17 @@ export default function Home({ postsPagination }: HomeProps) {
         },
       };
     });
-    
+
     return postsFormatted
   }
 
   async function getNextPage() {
-      const {} = await fetch(nextPage)
-    
-    const fomattedNewPosts = formatPosts(nextPagePosts.json())
+    const nextPagePosts = await fetch(nextPage)
+    const nextPagePostResult: PostPagination = await nextPagePosts.json()
+    const fomattedNewPosts = formatPosts(nextPagePostResult)
 
     setPosts([...posts, ...fomattedNewPosts])
-    setNextPage(newPosts.next_page)
+    setNextPage(nextPagePostResult.next_page)
 
   }
   return (
@@ -72,19 +72,19 @@ export default function Home({ postsPagination }: HomeProps) {
       <main className={styles.postContainer}>
 
         <div className={styles.postsContent}>
-      <img src="/logo.svg" alt="logo" />
+          <img src="/logo.svg" alt="logo" />
 
           {posts.map(post => (
-            <Link href={`/post/${post.uid}`}>
-              <a key={post.uid}>
+            <Link key={post.uid} href={`/post/${post.uid}`}>
+              <a>
                 <strong>{post.data.title}</strong>
                 <p>{post.data.subtitle}</p>
-                <time><IoCalendarClearOutline/>{post.first_publication_date}</time>
-                <label><BiUser/>{post.data.author}</label>
+                <time><IoCalendarClearOutline />{post.first_publication_date}</time>
+                <label><BiUser />{post.data.author}</label>
               </a>
             </Link>
           ))}
-        <button onClick={getNextPage} className={postsPagination.next_page ? '' : styles.hidden}>Carregar mais posts</button>
+          <button onClick={getNextPage} className={nextPage ? '' : styles.hidden}>Carregar mais posts</button>
         </div>
       </main>
     </>
