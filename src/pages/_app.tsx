@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
   return (
     <>
-      {asPath !== '' ? <Header /> : <></>}
+      {asPath !== '/' ? <Header /> : <></>}
       <Component {...pageProps} />
     </>
   )

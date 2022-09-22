@@ -2,13 +2,16 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
-import { getPrismicClient } from '../services/prismicio';
+import { getPrismicClient } from '../services/prismic';
 
-import commonStyles from '../styles/common.module.scss';
-import styles from './home.module.scss';
+
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { BiUser } from "react-icons/bi";
 import { useState } from 'react';
+
+
+import styles from './home.module.scss';
+import commonStyles from '../styles/common.module.scss';
 
 interface Post {
   uid?: string;
@@ -56,6 +59,7 @@ export default function Home({ postsPagination }: HomeProps) {
   }
 
   async function getNextPage() {
+    if(!nextPage) return
     const nextPagePosts = await fetch(nextPage)
     const nextPagePostResult: PostPagination = await nextPagePosts.json()
     const fomattedNewPosts = formatPosts(nextPagePostResult)
@@ -69,7 +73,7 @@ export default function Home({ postsPagination }: HomeProps) {
       <Head>
         <title>Home | SpaceTraveling</title>
       </Head>
-      <main className={styles.postContainer}>
+      <main className={commonStyles.container}>
 
         <div className={styles.postsContent}>
           <img src="/logo.svg" alt="logo" />
@@ -79,12 +83,15 @@ export default function Home({ postsPagination }: HomeProps) {
               <a>
                 <strong>{post.data.title}</strong>
                 <p>{post.data.subtitle}</p>
+                <div className={commonStyles.infoContainer}>
                 <time><IoCalendarClearOutline />{post.first_publication_date}</time>
                 <label><BiUser />{post.data.author}</label>
+                </div>
+                
               </a>
             </Link>
           ))}
-          <button onClick={getNextPage} className={nextPage ? '' : styles.hidden}>Carregar mais posts</button>
+          {nextPage ? <button onClick={getNextPage} >Carregar mais posts</button> : <></>}
         </div>
       </main>
     </>

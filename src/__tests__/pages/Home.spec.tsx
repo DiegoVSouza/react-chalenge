@@ -5,7 +5,7 @@ import { GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-import { getPrismicClient } from '../../services/prismicio';
+import { getPrismicClient } from '../../services/prismic';
 import App, { getStaticProps } from '../../pages';
 
 interface Post {
