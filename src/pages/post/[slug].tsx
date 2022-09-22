@@ -7,6 +7,9 @@ import { IoCalendarClearOutline } from 'react-icons/io5';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { getPrismicClient } from '../../services/prismic';
 
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 
@@ -32,6 +35,16 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
+  const formatDate = (date:string)=>{
+    return format(
+      new Date(date),
+      "dd MMM yyyy",
+      {
+        locale: ptBR
+      }
+    )
+  }
+
   const { isFallback } = useRouter();
   const contentWordsBody = post.data.content
     .map(content => RichText.asText(content.body).split(' '))
@@ -76,7 +89,7 @@ export default function Post({ post }: PostProps) {
                 <h2>{post.data.title}</h2>
                 <time>
                   <IoCalendarClearOutline />
-                  {post.first_publication_date}
+                  {formatDate(post.first_publication_date)}
                 </time>
                 <label>
                   <BiUser />
@@ -119,27 +132,9 @@ export const getStaticProps = async ({ params }) => {
   const prismic = getPrismicClient({});
   const { slug } = params;
   const response = await prismic.getByUID('posts', slug);
-  // console.log(JSON.stringify(response, null, 2))
-  const post = {
-    first_publication_date: new Date(
-      response.first_publication_date
-    ).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    }),
-    data: {
-      title: response.data.title,
-      author: response.data.author,
-      banner: {
-        url: response.data.banner.url,
-      },
-      content: response.data.content,
-    },
-  };
   return {
     props: {
-      post,
+      post: response,
     },
   };
 

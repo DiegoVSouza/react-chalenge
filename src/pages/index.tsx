@@ -3,11 +3,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import { getPrismicClient } from '../services/prismic';
-
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { BiUser } from "react-icons/bi";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 import styles from './home.module.scss';
@@ -35,39 +36,28 @@ interface HomeProps {
 export default function Home({ postsPagination }: HomeProps) {
   const [posts, setPosts] = useState(postsPagination.results)
   const [nextPage, setNextPage] = useState(postsPagination.next_page)
-  const formatPosts = (posts: PostPagination) => {
-    console.log(posts)
-    const postsFormatted: Post[] = posts.results.map(post => {
-      return {
-        uid: post.uid,
-        first_publication_date: new Date(
-          post.first_publication_date
-        ).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        }),
-        data: {
-          title: post.data.title,
-          subtitle: post.data.subtitle,
-          author: post.data.author,
-        },
-      };
-    });
 
-    return postsFormatted
+  const formatDate = (date:string)=>{
+    return format(
+      new Date(date),
+      "dd MMM yyyy",
+      {
+        locale: ptBR
+      }
+    )
   }
+
 
   async function getNextPage() {
     if(!nextPage) return
     const nextPagePosts = await fetch(nextPage)
     const nextPagePostResult: PostPagination = await nextPagePosts.json()
-    const fomattedNewPosts = formatPosts(nextPagePostResult)
 
-    setPosts([...posts, ...fomattedNewPosts])
+    setPosts([...posts, ...nextPagePostResult.results])
     setNextPage(nextPagePostResult.next_page)
 
   }
+
   return (
     <>
       <Head>
@@ -84,7 +74,7 @@ export default function Home({ postsPagination }: HomeProps) {
                 <strong>{post.data.title}</strong>
                 <p>{post.data.subtitle}</p>
                 <div className={commonStyles.infoContainer}>
-                <time><IoCalendarClearOutline />{post.first_publication_date}</time>
+                <time><IoCalendarClearOutline />{formatDate(post.first_publication_date)}</time>
                 <label><BiUser />{post.data.author}</label>
                 </div>
                 
@@ -103,28 +93,11 @@ export const getStaticProps = async () => {
   const postsResponse = await prismic.getByType('posts', {
     pageSize: 1,
   });
-  const results = postsResponse.results.map(post => {
-    return {
-      uid: post.uid,
-      first_publication_date: new Date(
-        post.first_publication_date
-      ).toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      }),
-      data: {
-        title: post.data.title,
-        subtitle: post.data.subtitle,
-        author: post.data.author,
-      },
-    };
-  });
 
   return {
     props: {
       postsPagination: {
-        results,
+        results: postsResponse.results,
         next_page: postsResponse.next_page,
       },
     },
