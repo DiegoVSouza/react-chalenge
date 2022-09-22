@@ -129,6 +129,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
+  console.log("ta tentando")
   const prismic = getPrismicClient({});
   const { slug } = params;
   const response = await prismic.getByUID('posts', slug);
@@ -137,6 +138,4 @@ export const getStaticProps = async ({ params }) => {
       post: response,
     },
   };
-
-  // TODO
 };
