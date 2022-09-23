@@ -5,7 +5,7 @@
 <br>
 </h1>
 
-<p align="center">Desafio para criação de blog do zero</p> 
+<p align="center">Desafio para criação de blog do zero com NextJs e CSM</p> 
  <p align="center">Desafio oferecido no curso IGNITE da <a href="https://www.rocketseat.com.br/">@rocketseat</a> </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 
 ## ℹ Sobre
 
-<p>O desafio consiste em criar uma pagina de para listagem e leitura de Posts utilizando Next.js e CSM
+<p>O desafio consiste em criar uma pagina de para listagem e leitura de Posts.
 </p>
 
  <p>A aplicação é construída com modelo <strong>Serveless</strong>, sem necessidade de criar uma API externa para manipular os dados</p>
@@ -42,7 +42,7 @@ git clone https://github.com/DiegoVSouza/spacetraveling.git
 **2:** Acesse o diretório do projeto.
 
 ```
-cd Cars-For-Sale-Front-End
+cd spacetraveling
 ```
 
 **3:** Instale as depedências
